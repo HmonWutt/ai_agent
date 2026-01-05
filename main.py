@@ -31,6 +31,7 @@ if not response.usage_metadata:
 prompt_tokens = response.usage_metadata.prompt_token_count
 response_tokens = response.usage_metadata.candidates_token_count
 if args.verbose:
+    print(f"User prompt: {args.user_prompt}")
     print(f"Prompt tokens: {prompt_tokens}")
     print(f"Response tokens: {response_tokens}")
 else:
