@@ -8,7 +8,7 @@ def get_files_info(working_directory, directory="."):
         valid_target_dir = os.path.normpath(os.path.commonpath(
             [working_dir_abs, target_dir])) == working_dir_abs
         if valid_target_dir:
-            output = ["Result for current directory: "]
+            output = [f"Result for {directory} directory: "]
             files = os.listdir(target_dir)
             for file in files:
                 file_path = os.path.normpath(
@@ -23,6 +23,3 @@ def get_files_info(working_directory, directory="."):
             return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
     except BaseException:
         return f'Error: "{directory}" is not a directory'
-
-
-print(get_files_info("calculator"))
