@@ -20,6 +20,7 @@ def run_python_file(working_directory, file_path, args=None):
                         command.extend(args)
                     completed_process = subprocess.run(
                         command, capture_output=True, text=True)
+                    time.sleep(30)
                     if completed_process.returncode == 0:
                         if not completed_process.stdout:
                             return "No output produced"
