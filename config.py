@@ -1,4 +1,3 @@
-from typing import Optional
 
 from google.genai import types
 
@@ -25,18 +24,12 @@ schema_get_file_content = types.FunctionDeclaration(
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "working_directory": types.Schema(
-                type=types.Type.STRING,
-                description="Directory in which to find the file in.",
-            ),
             "file_path": types.Schema(
                 type=types.Type.STRING,
                 description="path of the file to read content from",
             ),
         },
-        required=[
-            "working_directory",
-            "file_path"],
+        required=["file_path"],
     ))
 
 schema_run_python_file = types.FunctionDeclaration(
@@ -45,20 +38,18 @@ schema_run_python_file = types.FunctionDeclaration(
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "working_directory": types.Schema(
-                type=types.Type.STRING,
-                description="Directory in which to find the file in.",
-            ),
             "file_path": types.Schema(
                 type=types.Type.STRING,
                 description="path of the file to read content from",
             ),
-            # "args": types.Schema(
-            #     type=types.Type.ARRAY,
-            #     description="optional arguments",),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                items=types.Schema(type=types.Type.STRING,
+                                   ),
+                description="optional arguments",
+            ),
         },
         required=[
-            "working_directory",
             "file_path"],
     ))
 
@@ -69,10 +60,6 @@ schema_write_file = types.FunctionDeclaration(
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "working_directory": types.Schema(
-                type=types.Type.STRING,
-                description="Directory in which to find the file in.",
-            ),
             "file_path": types.Schema(
                 type=types.Type.STRING,
                 description="path of the file to read content from",
@@ -82,7 +69,6 @@ schema_write_file = types.FunctionDeclaration(
                 description="write given content to file",),
         },
         required=[
-            "working_directory",
             "file_path", "content"],
     ))
 

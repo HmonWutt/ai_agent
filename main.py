@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+from call_function import call_function
 from config import available_functions, model_name, system_prompt
 
 parser = argparse.ArgumentParser(description="Chatbot")
@@ -43,7 +44,20 @@ if args.verbose:
 else:
     pass
 if not response.function_calls:
+    print("Response: ")
     print(response.text)
 else:
+    function_responses = []
     for function in response.function_calls:
-        print(f"Calling function:{function.name}({function.args})")
+        result = call_function(function, args.verbose)
+        if (
+            not result.parts
+            or not result.parts[0].function_response
+            or not result.parts[0].function_response.response
+        ):
+            raise RuntimeError(
+                f"Empty function response for {
+                    function.name}")
+        if args.verbose:
+            print(f"-> {result.parts[0].function_response.response}")
+        function_responses.append(result.parts[0])

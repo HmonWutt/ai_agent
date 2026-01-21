@@ -1,6 +1,5 @@
 import os
 import subprocess
-import time
 
 
 def run_python_file(working_directory, file_path, args=None):
@@ -18,19 +17,30 @@ def run_python_file(working_directory, file_path, args=None):
                     command = ["python", file_path]
                     if args:
                         command.extend(args)
-                    completed_process = subprocess.run(
-                        command, capture_output=True, text=True)
-                    time.sleep(30)
-                    if completed_process.returncode == 0:
-                        if not completed_process.stdout:
-                            return "No output produced"
-                        return f"STDOUT: {completed_process.stdout}"
-                    result = f"Process exited with code {
-                        completed_process.returncode} "
-
-                    return result + f"STDERR: {completed_process.stderr}"
+                    result = subprocess.run(
+                        command,
+                        cwd=working_dir_abs,
+                        capture_output=True,
+                        text=True,
+                        timeout=30,
+                    )
+                    output = []
+                    if result.returncode != 0:
+                        output.append(
+                            f"Process exited with code {
+                                result.returncode}")
+                    if not result.stdout and not result.stderr:
+                        output.append("No output produced")
+                    if result.stdout:
+                        output.append(f"STDOUT:\n{result.stdout}")
+                    if result.stderr:
+                        output.append(f"STDERR:\n{result.stderr}")
+                    return "\n".join(output)
                 return f'Error: "{file_path}" is not a Python file'
             return f'Error: "{file_path}" does not exist or is not a regular file'
         return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
     except (BaseException) as e:
         return f"Error: executing Python file: {e}"
+
+
+print(run_python_file("./calculator", "tests.py"))
