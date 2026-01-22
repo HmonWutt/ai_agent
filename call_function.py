@@ -4,8 +4,7 @@ from functions.get_files_content import get_file_content
 from functions.get_files_info import get_files_info
 from functions.run_python_file import run_python_file
 from functions.write_file import write_file
-
-WORKING_DIR = "./calculator"
+from config import WORKING_DIR
 function_map = {
     "get_files_info": get_files_info,
     "get_file_content": get_file_content,
@@ -32,7 +31,7 @@ def call_function(function_call, verbose=False):
         )
 
     args = dict(function_call.args) if function_call.args else {}
-    args["working_directory"] = "./calculator"
+    args["working_directory"] = WORKING_DIR
     function_result = function_map[function_name](**args)
     return types.Content(
         role="tool",

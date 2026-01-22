@@ -2,6 +2,8 @@
 from google.genai import types
 
 MAX_CHARS = 10000
+WORKING_DIR = "./calculator"
+MAX_ITERS = 20
 
 model_name = "gemini-2.5-flash"
 schema_get_files_info = types.FunctionDeclaration(
@@ -86,6 +88,7 @@ When a user asks a question or makes a request, make a function call plan. You c
 - Read file contents
 - Execute Python files with optional arguments
 - Write or overwrite files
+- Fix bugs
 
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
 """
